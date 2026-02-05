@@ -1,11 +1,17 @@
 {
-  "name": "telegram-uploader",
+  "name": "telegram-uploader-client",
+  "version": "1.0.0",
+  "description": "Telegram to Hugging Face uploader using Client API (MTProto)",
+  "main": "server.js",
   "dependencies": {
-    "express": "^4.19.2",
+    "telegram": "^2.22.2",
     "node-fetch": "^2.6.9",
-    "form-data": "^4.0.0"
+    "input": "^1.0.1"
   },
   "scripts": {
     "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

@@ -23,13 +23,16 @@ function getFileInfo(msg) {
 app.post("/", async (req, res) => {
   try {
     const msg = req.body.message
-    if (!msg) return res.send("no message")
+    if (!msg) return res.sendStatus(200) // مهم برای Telegram
 
     const [fileId, fileName] = getFileInfo(msg)
+    if (!fileId) return res.sendStatus(200)
 
     const tg = await fetch(
       `https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`
     ).then(r => r.json())
+
+    if (!tg.ok) return res.sendStatus(200)
 
     const fileRes = await fetch(
       `https://api.telegram.org/file/bot${BOT_TOKEN}/${tg.result.file_path}`
@@ -43,11 +46,13 @@ app.post("/", async (req, res) => {
     await fetch(SPACE_URL, { method: "POST", body: form })
 
     console.log("uploaded:", fileName)
-    res.send("ok")
+    res.sendStatus(200) // مهم برای Telegram
   } catch (e) {
     console.error(e)
-    res.status(500).send("error")
+    res.sendStatus(500)
   }
 })
 
-app.listen(process.env.PORT || 8000)
+app.listen(process.env.PORT || 8000, () => {
+  console.log("Server started on port", process.env.PORT || 8000)
+})
